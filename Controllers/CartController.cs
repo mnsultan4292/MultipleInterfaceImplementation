@@ -12,7 +12,7 @@ namespace MultipleInterfaceImplementation.Controllers
     public class CartController : ControllerBase
     {
         private readonly IEnumerable<IShoppingCart> _shoppingCart;
-        public CartController(IServiceProvider serviceProvider, IEnumerable<IShoppingCart> shoppingCart)
+        public CartController( IEnumerable<IShoppingCart> shoppingCart)
         {
             _shoppingCart = shoppingCart;
         }
