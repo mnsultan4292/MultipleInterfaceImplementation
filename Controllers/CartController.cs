@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MultipleInterfaceImplementation.Repository;
 using System.Linq;
+using System.Collections;
 //using Microsoft.AspNetCore.Mvc.HttpGet;
 
 namespace MultipleInterfaceImplementation.Controllers
@@ -10,23 +11,48 @@ namespace MultipleInterfaceImplementation.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly IServiceProvider _serviceProvider;
-        //private readonly IShoppingCart _shoppingCart;
-        public CartController( IServiceProvider serviceProvider)
+        private readonly IEnumerable<IShoppingCart> _shoppingCart;
+        public CartController(IServiceProvider serviceProvider, IEnumerable<IShoppingCart> shoppingCart)
         {
-            //_shoppingCart = shoppingCart;
-            _serviceProvider = serviceProvider;
+            _shoppingCart = shoppingCart;
         }
 
         [HttpGet]
-        [Route("Inedx")]
-        public IActionResult Index()
+        [Route("Amazon")]
+        public IActionResult Amazon()
         {
-            var services = _serviceProvider.GetService<IShoppingCart>();
+            string str = string.Empty;
+            var service = _shoppingCart.FirstOrDefault(x => x.GetType() == typeof(ShoppingCartAmazon));
+            if (service != null)
+            {
+                str = Convert.ToString(service.GetCart());
+            }
+            return Content(str);
+        }
+        [HttpGet]
+        [Route("Flipkart")]
+        public IActionResult Flipkart()
+        {
+            string str = string.Empty;
+            var service = _shoppingCart.FirstOrDefault(x => x.GetType() == typeof(ShoppingCartFlipCart));
+            if (service != null)
+            {
+                str = Convert.ToString(service.GetCart());
+            }
+            return Content(str);
+        }
 
-            // Get required implementation from the collection
-            //var pushNotificationReminder = services.FirstOrDefault(x => x.GetType() == typeof(PushNotificationReminderService));
-            return Content("hello");
+        [HttpGet]
+        [Route("Bay")]
+        public IActionResult Bay()
+        {
+            string str = string.Empty;
+            var service = _shoppingCart.FirstOrDefault(x => x.GetType() == typeof(ShoppingCartEBay));
+            if (service != null)
+            {
+                str = Convert.ToString(service.GetCart());
+            }
+            return Content(str);
         }
     }
 }
