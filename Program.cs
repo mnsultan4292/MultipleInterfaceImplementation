@@ -1,4 +1,5 @@
 using MultipleInterfaceImplementation.Repository;
+using MultipleInterfaceImplementation.Repository.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IShoppingCart, ShoppingCartAmazon>();
 builder.Services.AddScoped<IShoppingCart, ShoppingCartEBay>();
 builder.Services.AddScoped<IShoppingCart, ShoppingCartFlipCart>();
+builder.Services.AddTransient<ICommonFactoryRepo, CommonFactoryRepo>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
